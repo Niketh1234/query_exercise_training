@@ -28,17 +28,23 @@ public class QueryParser {
                 return word;
             }
         }
-        return "";
+        return "Seems like there is no file";
     }
     public static String stepOneTaskThree(String[] words){
         String answer = "";
+        boolean flag = true;
         for(String word : words){
             if(word.toLowerCase().equals("where"))
-                  break;
+            {
+                flag = false;
+                break;
+            }
+                  
             else
                 answer = answer + word + " ";
         }
-        
+        if(flag == true)
+            return "Seems like there is no condition";
         return answer.trim();
     }
     public static ArrayList<String> stepTwoTaskOne(String[] words){
@@ -62,6 +68,8 @@ public class QueryParser {
                 filterPart = filterPart + word +" ";
             }
         }
+        if(filterPart.length() == 0)
+            return "Seems like there are no conditions";
         return filterPart.trim();
     }
     public static ArrayList<String> stepTwoTaskThree(String[] words){
@@ -78,7 +86,8 @@ public class QueryParser {
                 temp = temp+filterParts[index]+" ";
             index++;
         }
-        conditions.add(temp.trim());
+        if(temp.length()!=0)
+            conditions.add(temp.trim());
         return conditions;
     }
     public static ArrayList<String> stepThreeTaskOne(String[] words){
@@ -124,14 +133,15 @@ public class QueryParser {
             System.out.println(arr);
     }
     public static void main(String[] args) {
-        String query = "select sum(name),age,max(country) from ipl.csv where season > 2014 and city = 'Bangalore' or age = 40 group by name";
+        //String query = "select sum(name),age,max(country) from ipl.csv where season > 2014 and city = 'Bangalore' or age = 40 group by name";
+        String query = "select * from ipl.csv group by percentage";
         String[] words = query.split(" ");
         //printWords(stepOneTaskOne(query)); 
         //System.out.println(stepOneTaskTwo(words));
         //System.out.println(stepOneTaskThree(words));
         //printWords(stepTwoTaskOne(words));
         //System.out.println(stepTwoTaskTwo(words));
-        //printWords(stepTwoTaskThree(words));
+        printWords(stepTwoTaskThree(words));
         //printWords(stepThreeTaskOne(words));
         //System.out.println(stepFourTaskOne(words));
         //printWords(stepFourTaskTwo(words));

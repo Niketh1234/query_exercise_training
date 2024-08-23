@@ -61,9 +61,21 @@ public class QueryPartsTest {
      }
      
      @Test
+     public void s1t2Negative() {
+        query = "select sum(name),age,max(country) from file_name where season > 2014 and city = Bangalore or age = 40 group by name";
+        assertEquals("Seems like there is no file",stepOneTaskTwo(query.split(" ")));
+     }
+     
+     @Test
      public void s1t3Positive() {
         query = "select * from file_name.txt where season > 2014 and city = Bangalore or age = 40 group by name";
         assertEquals("select * from file_name.txt",stepOneTaskThree(query.split(" ")));
+     }
+     
+     @Test
+     public void s1t3Negative() {
+        query = "select * from file_name.txt";
+        assertEquals("Seems like there is no condition",stepOneTaskThree(query.split(" ")));
      }
      
      @Test
@@ -81,10 +93,24 @@ public class QueryPartsTest {
      }
      
      @Test
+     public void s2t2Negative() {
+        query = "select * from ipl.csv group by percentage";
+        assertEquals("Seems like there are no conditions",stepTwoTaskTwo(query.split(" ")));
+     }
+     
+     @Test
      public void s2t3Positive(){
         query = "select * from ipl.csv where season > 2014 and city = 'Bangalore' or age >= 30 group by percentage";
         array = stepTwoTaskThree(query.split(" "));
         Collections.addAll(compare,"season > 2014","city = 'Bangalore'","age >= 30");
+        assertIterableEquals(array,compare);
+     }
+     
+     @Test
+     public void s2t3Negative(){
+        query = "select * from ipl.csv group by percentage";
+        array = stepTwoTaskThree(query.split(" "));
+        Collections.addAll(compare,"Seems like there are no conditions");
         assertIterableEquals(array,compare);
      }
      
@@ -94,6 +120,13 @@ public class QueryPartsTest {
         array = stepThreeTaskOne(query.split(" "));
         Collections.addAll(compare,"and","or");
         assertIterableEquals(array,compare);
+     }
+     
+     @Test
+     public void s3t1Negative(){
+        query = "select * from ipl.csv group by percentage";
+        array = stepThreeTaskOne(query.split(" "));
+        assertEquals(array.size(),compare.size());
      }
      
      @Test
